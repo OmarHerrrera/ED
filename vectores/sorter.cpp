@@ -13,8 +13,12 @@ using namespace std::chrono;
 
 //funcion prototipo
 void burbuja(vector<double>& v);
-
+void seleccion(vector<double>& v);
 void imprime(vector<double> v);
+void insertion_sort(vector<double>& v);
+
+
+
 int main()
 {
     // vector con 1000 elementos
@@ -26,14 +30,16 @@ int main()
 
     // generar 1000 datos con una
     // instrucción cíclico
-    for (int i = 0; i < 100000; i++)
+    for (int i = 0; i < 1000000; i++)
     {
         double num = distribution(gen);
         v1000.push_back(num);
     }
+
     //imprime(v1000);
-    auto start1000 = high_resolution_clock::now(); 
-    burbuja(v1000); 
+    cout << endl << endl;
+    auto start1000 = high_resolution_clock::now();
+    insertion_sort(v1000);
     auto stop1000 = high_resolution_clock::now();
     auto duration1000 = duration_cast<milliseconds>(stop1000 - start1000);
     cout << "Duracion " << duration1000.count() << endl;
@@ -41,22 +47,67 @@ int main()
 
 }
 
-void burbuja(vector <double> & v )
+
+
+
+void insertion_sort(vector<double>& v)
 {
-    double temp = 0; 
-    bool swapp = true; 
+    for (int i = 1; i < v.size(); ++i) 
+    {
+        int key = v[i];
+        int j = i - 1;
+
+     
+        while (j >= 0 && v[j] > key) 
+        {
+            v[j + 1] = v[j];
+            j--;
+        }
+       
+        v[j + 1] = key;
+    }
+}
+
+
+
+void seleccion(vector<double>& v)
+{
+    int indiceMin = 0; 
+    for (int i = 0; i < v.size(); i++)
+    {
+        indiceMin = i; 
+        for (int j = i + 1; j < v.size(); j++)
+        {
+            if (v[j] < v[indiceMin])
+            {
+                indiceMin = j; 
+            }
+        }
+        double temp = v[indiceMin]; 
+        v[indiceMin] = v[i];
+        v[i] = temp; 
+
+    }
+}
+
+
+
+void burbuja(vector <double>& v)
+{
+    double temp = 0;
+    bool swapp = true;
 
     while (swapp)
     {
-        swapp = false; 
-        for (int i = 0; i < v.size()-1; i++)
+        swapp = false;
+        for (int i = 0; i < v.size() - 1; i++)
         {
             if (v[i] > v[i + 1])
             {
-                temp = v[i + 1]; 
+                temp = v[i + 1];
                 v[i + 1] = v[i];
                 v[i] = temp;
-                swapp = true; 
+                swapp = true;
             }
         }
     }
